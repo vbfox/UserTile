@@ -37,14 +37,37 @@
 
         static void ExportTile(string userName, string path)
         {
-            var data = LocalAccounts.GetUserTileData(userName);
+            var data = GetUserTileData(userName);
+
             var stream = new MemoryStream(data);
             var userTile = UserTileBinary.LoadFrom(stream);
+
+            Console.WriteLine("UserTile is in {0} format", userTile.Format);
+            Console.WriteLine("  Originaly in {0}", userTile.SourcePath);
+
+            File.WriteAllBytes(path, userTile.ImageData);
+        }
+
+        static byte[] GetUserTileData(string userName)
+        {
+            var data = LocalAccounts.GetUserTileData(userName);
+            if (data == null)
+            {
+                Console.WriteLine("No user tile stored");
+                Environment.Exit(1);
+            }
+            return data;
         }
 
         static void ExportTileData(string userName, string path)
         {
             var data = LocalAccounts.GetUserTileData(userName);
+            if (data == null)
+            {
+                Console.WriteLine("No user tile stored");
+                Environment.Exit(1);
+            }
+
             using (var stream = File.OpenWrite(path))
             {
                 stream.Write(data, 0, data.Length);
