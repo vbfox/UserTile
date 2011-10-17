@@ -51,6 +51,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegistryUtils\NativeMethods.cs" />
     <Compile Include="RegistryUtils\RegistryExtensions.cs" />
+    <Compile Include="UserTileBinary.cs" />
+    <Compile Include="UserTileBinaryReader.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
