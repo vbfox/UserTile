@@ -10,10 +10,18 @@ namespace BlackFox.UserTile
 
         Operation operation = Operation.ShowHelp;
 
+
+
         public Arguments()
         {
             optionSet = new OptionSet()
                 .Add("l|list", "List all local users", v => operation = Operation.ListUsers)
+                .Add("u|user=", "Specify the user to query/modify", v => UserName = v)
+                .Add("x|exportBin=", "Export the binary data to the specified file", v =>
+                {
+                    operation = Operation.ExtractUserTileData;
+                    Path = v;
+                })
                 .Add("h|?|help", "Show this help", v => operation = Operation.ShowHelp);
         }
 
@@ -27,6 +35,15 @@ namespace BlackFox.UserTile
             get { return additionalArgs; }
         }
 
+        public OptionSet OptionSet
+        {
+            get { return optionSet; }
+        }
+
+        public string Path { get; private set; }
+
+        public string UserName { get; private set; }
+
         public static Arguments Parse(string[] args)
         {
             var result = new Arguments();
@@ -36,7 +53,7 @@ namespace BlackFox.UserTile
 
         void ParseCore(IEnumerable<string> args)
         {
-            additionalArgs = optionSet.Parse(args);
+            additionalArgs = OptionSet.Parse(args);
         }
     }
 }
