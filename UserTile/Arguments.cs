@@ -1,4 +1,4 @@
-namespace UserTile
+namespace BlackFox.UserTile
 {
     using System.Collections.Generic;
     using NDesk.Options;

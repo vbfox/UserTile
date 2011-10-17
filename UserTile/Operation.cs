@@ -1,4 +1,4 @@
-namespace UserTile
+namespace BlackFox.UserTile
 {
     enum Operation
     {
