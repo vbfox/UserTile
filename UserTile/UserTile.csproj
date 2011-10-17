@@ -53,6 +53,7 @@
     <Compile Include="RegistryUtils\RegistryExtensions.cs" />
     <Compile Include="UserTileBinary.cs" />
     <Compile Include="UserTileBinaryReader.cs" />
+    <Compile Include="UserTileBinaryWriter.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

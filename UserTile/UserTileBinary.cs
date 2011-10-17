@@ -18,26 +18,22 @@ namespace BlackFox.UserTile
             }
         }
 
-        string format;
-        string sourcePath;
-        byte[] imageData;
+        public string Format { get; set; }
 
-        public string Format
+        public string SourcePath { get; set; }
+
+        public byte[] ImageData { get; set; }
+
+        public byte[] UnknownBytes1
         {
-            get { return format; }
-            set { format = value; }
+            get { return unknownBytes1; }
+            set { unknownBytes1 = value; }
         }
 
-        public string SourcePath
+        public byte[] UnknownBytes2
         {
-            get { return sourcePath; }
-            set { sourcePath = value; }
-        }
-
-        public byte[] ImageData
-        {
-            get { return imageData; }
-            set { imageData = value; }
+            get { return unknownBytes2; }
+            set { unknownBytes2 = value; }
         }
 
         public static UserTileBinary LoadFrom(FileInfo file)
@@ -59,5 +55,26 @@ namespace BlackFox.UserTile
             reader.Read();
             return result;
         }
+
+        public void SaveTo(Stream stream)
+        {
+            if (stream == null) throw new ArgumentNullException("stream");
+
+            var writer = new UserTileBinaryWriter(stream, this);
+            writer.Write();
+        }
+
+        public void SaveTo(FileInfo file)
+        {
+            if (file == null) throw new ArgumentNullException("file");
+
+            using (var stream = file.OpenWrite())
+            {
+                SaveTo(stream);
+            }
+        }
+
+        byte[] unknownBytes1 = new byte[] { 0x00, 0x00, 0x00, 0x00 };
+        byte[] unknownBytes2 = new byte[] { 0x02, 0x00, 0x00, 0x00 };
     }
 }
