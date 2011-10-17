@@ -1,4 +1,4 @@
-namespace BlackFox.UserTile.Registry
+namespace BlackFox.UserTile.RegistryUtils
 {
     using System;
     using Microsoft.Win32;

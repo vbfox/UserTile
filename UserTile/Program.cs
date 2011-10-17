@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using BlackFox.UserTile.Registry;
+    using BlackFox.UserTile.RegistryUtils;
     using Microsoft.Win32;
 
     class Program
