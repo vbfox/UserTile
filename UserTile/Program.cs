@@ -17,21 +17,32 @@
 
             switch (args.Operation)
             {
-                case Operation.ShowHelp:
-                    ShowHelp(args);
-                    break;
-
                 case Operation.ListUsers:
                     ListUsers();
                     break;
 
-                case Operation.ExtractUserTileData:
-                    ExportUserTileData(args.UserName, args.Path);
+                case Operation.ExportTileData:
+                    ExportTileData(args.UserName, args.Path);
+                    break;
+
+                case Operation.ExportTile:
+                    ExportTile(args.UserName, args.Path);
+                    break;
+
+                default:
+                    ShowHelp(args);
                     break;
             }
         }
 
-        static void ExportUserTileData(string userName, string path)
+        static void ExportTile(string userName, string path)
+        {
+            var data = LocalAccounts.GetUserTileData(userName);
+            var stream = new MemoryStream(data);
+            var userTile = UserTileBinary.LoadFrom(stream);
+        }
+
+        static void ExportTileData(string userName, string path)
         {
             var data = LocalAccounts.GetUserTileData(userName);
             using (var stream = File.OpenWrite(path))

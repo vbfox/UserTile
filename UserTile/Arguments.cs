@@ -17,9 +17,14 @@ namespace BlackFox.UserTile
             optionSet = new OptionSet()
                 .Add("l|list", "List all local users", v => operation = Operation.ListUsers)
                 .Add("u|user=", "Specify the user to query/modify", v => UserName = v)
-                .Add("x|exportBin=", "Export the binary data to the specified file", v =>
+                .Add("x|exportData=", "Export the binary data to the specified file", v =>
                 {
-                    operation = Operation.ExtractUserTileData;
+                    operation = Operation.ExportTileData;
+                    Path = v;
+                })
+                .Add("e|export=", "Export the user picture to the specified file", v =>
+                {
+                    operation = Operation.ExportTile;
                     Path = v;
                 })
                 .Add("h|?|help", "Show this help", v => operation = Operation.ShowHelp);

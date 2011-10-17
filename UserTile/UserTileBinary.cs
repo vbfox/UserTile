@@ -1,26 +1,63 @@
 namespace BlackFox.UserTile
 {
+    using System;
     using System.IO;
 
     class UserTileBinary
     {
-        byte[] header = new byte[]
+        public static byte[] Header
         {
-            0x01, 0x00, 0x00, 0x00,
-            0x03, 0x00, 0x00, 0x00,
-            0x01, 0x00, 0x00, 0x00,
-        };
+            get
+            {
+                return new byte[]
+                {
+                    0x01, 0x00, 0x00, 0x00,
+                    0x03, 0x00, 0x00, 0x00,
+                    0x01, 0x00, 0x00, 0x00,
+                };
+            }
+        }
 
         string format;
         string sourcePath;
         byte[] imageData;
 
-        void LoadFromFile(FileInfo file)
+        public string Format
         {
+            get { return format; }
+            set { format = value; }
+        }
+
+        public string SourcePath
+        {
+            get { return sourcePath; }
+            set { sourcePath = value; }
+        }
+
+        public byte[] ImageData
+        {
+            get { return imageData; }
+            set { imageData = value; }
+        }
+
+        public static UserTileBinary LoadFrom(FileInfo file)
+        {
+            if (file == null) throw new ArgumentNullException("file");
+
             using (var stream = file.OpenRead())
             {
-
+                return LoadFrom(stream);
             }
+        }
+
+        public static UserTileBinary LoadFrom(Stream stream)
+        {
+            if (stream == null) throw new ArgumentNullException("stream");
+
+            var result = new UserTileBinary();
+            var reader = new UserTileBinaryReader(stream, result);
+            reader.Read();
+            return result;
         }
     }
 }

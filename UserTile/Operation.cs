@@ -4,7 +4,8 @@ namespace BlackFox.UserTile
     {
         ShowHelp,
         ListUsers,
-        ExtractUserTileData,
+        ExportTileData,
+        ExportTile,
         SetUserTile
     }
 }
