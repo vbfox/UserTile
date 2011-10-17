@@ -10,25 +10,33 @@ namespace BlackFox.UserTile
 
         Operation operation = Operation.ShowHelp;
 
-
-
         public Arguments()
         {
             optionSet = new OptionSet()
                 .Add("l|list", "List all local users", v => operation = Operation.ListUsers)
                 .Add("u|user=", "Specify the user to query/modify", v => UserName = v)
-                .Add("x|exportData=", "Export the binary data to the specified file", v =>
+                .Add("x|export-data=", "Export the tile binary data to the specified file", v =>
                 {
                     operation = Operation.ExportTileData;
                     Path = v;
                 })
-                .Add("e|export=", "Export the user picture to the specified file", v =>
+                .Add("e|export|export-tile=", "Export the user picture to the specified file", v =>
                 {
                     operation = Operation.ExportTile;
                     Path = v;
                 })
+                .Add("set-data=", "Set the user tile binary data to the specified file content", v =>
+                {
+                    operation = Operation.SetUserTileData;
+                    Path = v;
+                })
+                .Add("s|set|set-tile=", "Set the user tile to the specified picture", v =>
+                {
+                    operation = Operation.SetUserTile;
+                    Path = v;
+                })
                 .Add("h|?|help", "Show this help", v => operation = Operation.ShowHelp);
-        }
+                }
 
         public Operation Operation
         {

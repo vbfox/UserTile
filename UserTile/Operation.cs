@@ -6,6 +6,7 @@ namespace BlackFox.UserTile
         ListUsers,
         ExportTileData,
         ExportTile,
+        SetUserTileData,
         SetUserTile
     }
 }

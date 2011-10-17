@@ -29,10 +29,27 @@
                     ExportTile(args.UserName, args.Path);
                     break;
 
+                case Operation.SetUserTileData:
+                    SetUserTileData(args.UserName, args.Path);
+                    break;
+
                 default:
                     ShowHelp(args);
                     break;
             }
+        }
+
+        static void SetUserTileData(string userName, string path)
+        {
+            var data = File.ReadAllBytes(path);
+
+            SetUserTileData(userName, data);
+        }
+
+        static void SetUserTileData(string userName, byte[] data)
+        {
+            var key = LocalAccounts.GetUserKey(userName);
+            key.SetValue("UserTile", data);
         }
 
         static void ExportTile(string userName, string path)

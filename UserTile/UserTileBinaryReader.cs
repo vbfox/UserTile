@@ -22,11 +22,12 @@ namespace BlackFox.UserTile
         public void Read()
         {
             reader = new BinaryReader(stream);
+
             ReadHeader();
             userTile.ImageData = ReadImageData();
-            reader.ReadBytes(4);
+            userTile.UnknownBytes1 = reader.ReadBytes(4);
             userTile.Format = ReadFormat();
-            reader.ReadBytes(4);
+            userTile.UnknownBytes2 = reader.ReadBytes(4);
             userTile.SourcePath = ReadSourcePath();
         }
 

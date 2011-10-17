@@ -17,7 +17,7 @@ namespace BlackFox.UserTile
             get { return UsersKey.OpenSubKeys("Names"); }
         }
 
-        static RegistryKey UsernameToUserKey(string userName)
+        public static RegistryKey GetUserKey(string userName)
         {
             var namedKey = UsersNameKey.OpenSubKey(userName);
 
@@ -46,7 +46,7 @@ namespace BlackFox.UserTile
 
         public static byte[] GetUserTileData(string userName)
         {
-            var key = UsernameToUserKey(userName);
+            var key = GetUserKey(userName);
 
             return (byte[])key.GetValue("UserTile");
         }
