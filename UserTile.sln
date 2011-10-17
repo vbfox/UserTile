@@ -3,6 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserTile", "UserTile\UserTile.csproj", "{0E895678-CF50-4C10-B3B2-11C0151FF694}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{789FDA68-A4E1-47A6-A50C-8104E43639C5}"
+	ProjectSection(SolutionItems) = preProject
+		COPYING.txt = COPYING.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
