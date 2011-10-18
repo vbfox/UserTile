@@ -20,23 +20,23 @@ account. For example to list all users stored in the registry run as an administ
 Arguments
 ---------
 
-## user, u
+### user, u
 
 Must be specified for all commands that require an user name
 
-## list, l
+### list, l
 
 List the name of all users present in the registry
 
     UserTile --list
 
-## export, e
+### export, e
 
 Export the tile to a bitmap file
 
     UserTile --user vbfox --export C:\tile.bmp
 
-## set, s
+### set, s
 
 Set a new tile for the user. All the formats supported by the .Net framework are supported.
 The image will be croped to a (centered) square, resized to 126x126 and converted to 16 bits per point colors.
