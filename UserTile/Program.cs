@@ -7,15 +7,10 @@
 namespace BlackFox.UserTile
 {
     using System;
-    using System.ComponentModel;
     using System.Drawing;
-    using System.Drawing.Imaging;
     using System.IO;
-    using System.Linq;
     using System.Reflection;
     using BlackFox.UserTile.RegistryUtils;
-    using Microsoft.Win32;
-    using Microsoft.Win32.SafeHandles;
 
     class Program
     {
@@ -60,10 +55,7 @@ namespace BlackFox.UserTile
         {
             var userTile = new UserTileBinary { Format = "bmp", SourcePath = path };
 
-            var image = Image.FromFile(path);
-            //Console.WriteLine(image.PixelFormat);
-            //return;
-            userTile.SetImageData(image);
+            userTile.SetImageData(Image.FromFile(path));
 
             var userTileData = new MemoryStream();
             userTile.SaveTo(userTileData);
@@ -79,27 +71,11 @@ namespace BlackFox.UserTile
 
         static void SetUserTileData(string userName, byte[] data)
         {
-            var key = LocalAccounts.GetUserKeyName(userName);
-            
-            //key.SetValue("UserTile", data);
+            var userKeyName = LocalAccounts.GetUserKeyName(userName);
 
-            SafeRegistryHandle result = null;
-            const int STANDARD_RIGHTS_WRITE = 0x00020000;
-            const int KEY_SET_VALUE = 0x0002;
-            const int SYNCHRONIZE = 0x00100000;
-            var winAccess = (STANDARD_RIGHTS_WRITE | KEY_SET_VALUE) & ~SYNCHRONIZE;
-            SafeRegistryHandle hkey2;
-            var ret = NativeMethods.RegOpenKeyEx(LocalAccounts.UsersKey.Handle, key, 0, winAccess, out result);
-            if (ret != 0)
-            {
-                throw new Win32Exception(ret);
-            }
-
-            ret = NativeMethods.RegSetValueEx(result, "UserTile", 0, RegistryValueKind.Binary, data, data.Length);
-            if (ret != 0)
-            {
-                throw new Win32Exception(ret);
-            }
+            // We can't really use the .Net API there as it expect to be run a normal user and seem to consider that
+            // the registry is read-only while running as the Local System user.
+            NativeMethods.SetBinaryValue(LocalAccounts.UsersKey, userKeyName, "UserTile", data);
         }
 
         static void ExportTile(string userName, string path)
