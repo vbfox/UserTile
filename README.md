@@ -39,6 +39,13 @@ Export the tile to a bitmap file
 ### set, s
 
 Set a new tile for the user. All the formats supported by the .Net framework are supported.
-The image will be croped to a (centered) square, resized to 126x126 and converted to 16 bits per point colors.
+The image will be croped to a (centered) square, resized to 126x126 and converted to 16 bits per pixel colors.
 
     UserTile --user vbfox --set C:\tile.jpg
+
+Thanks
+------
+
+I want to thank **Micah Rowland** and
+[it's blog post on Xtreme Deployment](http://deployment.xtremeconsulting.com/2010/06/23/usertile-automation-part-1/)
+for the first hints on where the tiles are stored and a basic analysis of the binary format.
