@@ -36,6 +36,9 @@ namespace BlackFox.UserTile
             WriteFormat();
             writer.Write(userTile.UnknownBytes2);
             WriteSourcePath();
+
+            writer.Flush();
+            writer = null;
         }
 
         void WriteHeader()
@@ -64,7 +67,13 @@ namespace BlackFox.UserTile
 
         void WriteSourcePath()
         {
-            var bytes = Encoding.Unicode.GetBytes(userTile.SourcePath + '\0');
+            var pathToWrite = userTile.SourcePath + '\0'; // Zero-Terminated
+            if (pathToWrite.Length % 2 != 0)
+            {
+                // I don't know the deep reason but without this padding byte the file will be invalid
+                pathToWrite += '\0';
+            }
+            var bytes = Encoding.Unicode.GetBytes(pathToWrite);
             WriteSizePrefixedArray(bytes);
         }
     }

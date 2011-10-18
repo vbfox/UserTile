@@ -27,5 +27,13 @@ namespace BlackFox.UserTile.RegistryUtils
 
             return lpType;
         }
+
+        [DllImport("advapi32.dll")]
+        public static extern int RegSetValueEx(SafeRegistryHandle hKey, String lpValueName, int reserved,
+            RegistryValueKind dwType, byte[] lpData, int cbData);
+
+        [DllImport("advapi32.dll")]
+        internal static extern int RegOpenKeyEx(SafeRegistryHandle hKey, String lpSubKey, int ulOptions,
+            int samDesired, out SafeRegistryHandle hkResult);
     }
 }

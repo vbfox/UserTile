@@ -35,6 +35,8 @@ namespace BlackFox.UserTile
             userTile.Format = ReadFormat();
             userTile.UnknownBytes2 = reader.ReadBytes(4);
             userTile.SourcePath = ReadSourcePath();
+
+            reader = null;
         }
 
         string ReadSourcePath()

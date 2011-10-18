@@ -7,8 +7,15 @@
 namespace BlackFox.UserTile
 {
     using System;
+    using System.ComponentModel;
+    using System.Drawing;
+    using System.Drawing.Imaging;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
+    using BlackFox.UserTile.RegistryUtils;
+    using Microsoft.Win32;
+    using Microsoft.Win32.SafeHandles;
 
     class Program
     {
@@ -39,10 +46,28 @@ namespace BlackFox.UserTile
                     SetUserTileData(args.UserName, args.Path);
                     break;
 
+                case Operation.SetUserTile:
+                    SetUserTile(args.UserName, args.Path);
+                    break;
+
                 default:
                     ShowHelp(args);
                     break;
             }
+        }
+
+        static void SetUserTile(string userName, string path)
+        {
+            var userTile = new UserTileBinary { Format = "bmp", SourcePath = path };
+
+            var image = Image.FromFile(path);
+            //Console.WriteLine(image.PixelFormat);
+            //return;
+            userTile.SetImageData(image);
+
+            var userTileData = new MemoryStream();
+            userTile.SaveTo(userTileData);
+            SetUserTileData(userName, userTileData.ToArray());
         }
 
         static void SetUserTileData(string userName, string path)
@@ -54,8 +79,27 @@ namespace BlackFox.UserTile
 
         static void SetUserTileData(string userName, byte[] data)
         {
-            var key = LocalAccounts.GetUserKey(userName);
-            key.SetValue("UserTile", data);
+            var key = LocalAccounts.GetUserKeyName(userName);
+            
+            //key.SetValue("UserTile", data);
+
+            SafeRegistryHandle result = null;
+            const int STANDARD_RIGHTS_WRITE = 0x00020000;
+            const int KEY_SET_VALUE = 0x0002;
+            const int SYNCHRONIZE = 0x00100000;
+            var winAccess = (STANDARD_RIGHTS_WRITE | KEY_SET_VALUE) & ~SYNCHRONIZE;
+            SafeRegistryHandle hkey2;
+            var ret = NativeMethods.RegOpenKeyEx(LocalAccounts.UsersKey.Handle, key, 0, winAccess, out result);
+            if (ret != 0)
+            {
+                throw new Win32Exception(ret);
+            }
+
+            ret = NativeMethods.RegSetValueEx(result, "UserTile", 0, RegistryValueKind.Binary, data, data.Length);
+            if (ret != 0)
+            {
+                throw new Win32Exception(ret);
+            }
         }
 
         static void ExportTile(string userName, string path)

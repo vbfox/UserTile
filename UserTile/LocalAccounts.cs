@@ -13,7 +13,7 @@ namespace BlackFox.UserTile
 
     static class LocalAccounts
     {
-        static RegistryKey UsersKey
+        public static RegistryKey UsersKey
         {
             get { return Registry.LocalMachine.OpenSubKeys("SAM", "SAM", "Domains", "Account", "Users"); }
         }
@@ -23,9 +23,9 @@ namespace BlackFox.UserTile
             get { return UsersKey.OpenSubKeys("Names"); }
         }
 
-        public static RegistryKey GetUserKey(string userName)
+        public static string GetUserKeyName(string userName)
         {
-            var namedKey = UsersNameKey.OpenSubKey(userName);
+            var namedKey = UsersNameKey.OpenSubKey(userName, RegistryKeyPermissionCheck.ReadWriteSubTree);
 
             if (namedKey == null)
             {
@@ -34,14 +34,19 @@ namespace BlackFox.UserTile
             }
 
             var kind = NativeMethods.GetValueKind(namedKey, null);
-            var kindString = kind.ToString("X8");
+            return kind.ToString("X8");
+        }
+
+        public static RegistryKey GetUserKey(string userName, bool writable)
+        {
+            var kindString = GetUserKeyName(userName);
 
             var hexKey = UsersKey.OpenSubKey(kindString);
 
             if (hexKey == null)
             {
                 var message = string.Format("The local user {0} was found but not it's corresponding Hex key \"{1}\".",
-                    userName, namedKey.GetValueKind(null));
+                    userName, kindString);
                 throw new ArgumentException(
                     message,
                     "userName");
@@ -52,7 +57,7 @@ namespace BlackFox.UserTile
 
         public static byte[] GetUserTileData(string userName)
         {
-            var key = GetUserKey(userName);
+            var key = GetUserKey(userName, false);
 
             return (byte[])key.GetValue("UserTile");
         }
