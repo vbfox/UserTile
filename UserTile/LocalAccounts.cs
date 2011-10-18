@@ -4,6 +4,7 @@
  * This program is open source; you can redistribute it and/or modify it under the terms of the BSD 2-Clause license 
  * as specified in COPYING.txt
  */
+
 namespace BlackFox.UserTile
 {
     using System;
@@ -29,8 +30,9 @@ namespace BlackFox.UserTile
 
             if (namedKey == null)
             {
-                throw new ArgumentException(
-                    "There is no information stored in the registry for the local user " + userName, "userName");
+                var message = string.Format("There is no information stored in the registry for the local user {0}",
+                    userName);
+                throw new ArgumentException(message, "userName");
             }
 
             var kind = NativeMethods.GetValueKind(namedKey, null);
@@ -47,9 +49,7 @@ namespace BlackFox.UserTile
             {
                 var message = string.Format("The local user {0} was found but not it's corresponding Hex key \"{1}\".",
                     userName, kindString);
-                throw new ArgumentException(
-                    message,
-                    "userName");
+                throw new ArgumentException(message, "userName");
             }
 
             return hexKey;

@@ -4,6 +4,7 @@
  * This program is open source; you can redistribute it and/or modify it under the terms of the BSD 2-Clause license 
  * as specified in COPYING.txt
  */
+
 namespace BlackFox.UserTile
 {
     using System;
@@ -42,10 +43,7 @@ namespace BlackFox.UserTile
         string ReadSourcePath()
         {
             var size = reader.ReadUInt32();
-            if (size > int.MaxValue)
-            {
-                throw new IOException("Not supported source path string size");
-            }
+            if (size > int.MaxValue) throw new IOException("Not supported source path string size");
 
             var bytes = reader.ReadBytes((int)size);
             return Encoding.Unicode.GetString(bytes).TrimEnd('\0');
@@ -54,10 +52,7 @@ namespace BlackFox.UserTile
         string ReadFormat()
         {
             var size = reader.ReadUInt32();
-            if (size > int.MaxValue)
-            {
-                throw new IOException("Not supported format string size");
-            }
+            if (size > int.MaxValue) throw new IOException("Not supported format string size");
 
             var bytes = reader.ReadBytes((int)size);
             return Encoding.Unicode.GetString(bytes).TrimEnd('\0');
@@ -66,10 +61,7 @@ namespace BlackFox.UserTile
         byte[] ReadImageData()
         {
             var size = reader.ReadUInt32();
-            if (size > int.MaxValue)
-            {
-                throw new IOException("Not supported image data size");
-            }
+            if (size > int.MaxValue) throw new IOException("Not supported image data size");
 
             return reader.ReadBytes((int)size);
         }
@@ -79,12 +71,9 @@ namespace BlackFox.UserTile
             var expectedHeader = UserTileBinary.Header;
             var header = reader.ReadBytes(expectedHeader.Length);
 
-            for (int i = 0; i < expectedHeader.Length; i++)
+            for (var i = 0; i < expectedHeader.Length; i++)
             {
-                if (expectedHeader[i] != header[i])
-                {
-                    throw new IOException("Invalid header binary");
-                }
+                if (expectedHeader[i] != header[i]) throw new IOException("Invalid header binary");
             }
         }
     }

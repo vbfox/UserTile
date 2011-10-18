@@ -4,6 +4,7 @@
  * This program is open source; you can redistribute it and/or modify it under the terms of the BSD 2-Clause license 
  * as specified in COPYING.txt
  */
+
 namespace BlackFox.UserTile
 {
     using System;
@@ -15,6 +16,8 @@ namespace BlackFox.UserTile
     {
         const int IMAGE_SIZE = 126;
         const int EXPECTED_OFFSET = 0x50;
+        byte[] unknownBytes1 = new byte[] { 0x00, 0x00, 0x00, 0x00 };
+        byte[] unknownBytes2 = new byte[] { 0x02, 0x00, 0x00, 0x00 };
 
         public static byte[] Header
         {
@@ -24,7 +27,7 @@ namespace BlackFox.UserTile
                 {
                     0x01, 0x00, 0x00, 0x00,
                     0x03, 0x00, 0x00, 0x00,
-                    0x01, 0x00, 0x00, 0x00,
+                    0x01, 0x00, 0x00, 0x00
                 };
             }
         }
@@ -85,9 +88,6 @@ namespace BlackFox.UserTile
             }
         }
 
-        byte[] unknownBytes1 = new byte[] { 0x00, 0x00, 0x00, 0x00 };
-        byte[] unknownBytes2 = new byte[] { 0x02, 0x00, 0x00, 0x00 };
-
         /// <summary>
         /// Set the ImageData from an Image.
         /// The tile bitmaps are read in a very secure context, the consequence is that microsoft wrote a specific
@@ -109,7 +109,7 @@ namespace BlackFox.UserTile
         static byte[] FixImageBytes(byte[] source)
         {
             // I don't know why this limitation exists but the parsing code seem pretty strict about it.
-            
+
             var bfSize = BitConverter.ToUInt32(source, 2);
             var bfOffBits = BitConverter.ToUInt32(source, 10);
 
@@ -141,10 +141,10 @@ namespace BlackFox.UserTile
         {
             var result = new Bitmap(IMAGE_SIZE, IMAGE_SIZE, PixelFormat.Format16bppRgb565);
             var wh = Math.Min(image.Width, image.Height);
-            
-            var left = (int)Math.Floor(image.Width / 2.0 - wh / 2.0);
+
+            var left = (int)Math.Floor(image.Width/2.0 - wh/2.0);
             left = Math.Max(left, 0);
-            var top = (int)Math.Floor(image.Height / 2.0 - wh / 2.0);
+            var top = (int)Math.Floor(image.Height/2.0 - wh/2.0);
             top = Math.Max(top, 0);
 
             var r = new Rectangle(left, top, wh, wh);

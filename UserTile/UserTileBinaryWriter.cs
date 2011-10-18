@@ -4,6 +4,7 @@
  * This program is open source; you can redistribute it and/or modify it under the terms of the BSD 2-Clause license 
  * as specified in COPYING.txt
  */
+
 namespace BlackFox.UserTile
 {
     using System;
@@ -32,7 +33,7 @@ namespace BlackFox.UserTile
             WriteHeader();
             WriteImageData();
             writer.Write(userTile.UnknownBytes1);
-            
+
             WriteFormat();
             writer.Write(userTile.UnknownBytes2);
             WriteSourcePath();
@@ -68,7 +69,7 @@ namespace BlackFox.UserTile
         void WriteSourcePath()
         {
             var pathToWrite = userTile.SourcePath + '\0'; // Zero-Terminated
-            if (pathToWrite.Length % 2 != 0)
+            if (pathToWrite.Length%2 != 0)
             {
                 // I don't know the deep reason but without this padding byte the file will be invalid
                 pathToWrite += '\0';

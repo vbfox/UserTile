@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2011, Roncaglia Julien <julien@roncaglia.fr>
+ * 
+ * This program is open source; you can redistribute it and/or modify it under the terms of the BSD 2-Clause license 
+ * as specified in COPYING.txt
+ */
+
 namespace BlackFox.UserTile.RegistryUtils
 {
     using System;
@@ -11,9 +18,8 @@ namespace BlackFox.UserTile.RegistryUtils
         const int KEY_SET_VALUE = 0x0002;
 
         [DllImport("advapi32.dll")]
-        static extern int RegQueryValueEx(SafeRegistryHandle hKey, string lpValueName,
-            int[] lpReserved, ref int lpType, [Out] byte[] lpData, 
-            ref int lpcbData);
+        static extern int RegQueryValueEx(SafeRegistryHandle hKey, string lpValueName, int[] lpReserved, ref int lpType,
+            [Out] byte[] lpData, ref int lpcbData);
 
         [DllImport("advapi32.dll")]
         static extern int RegSetValueEx(SafeRegistryHandle hKey, String lpValueName, int reserved,
@@ -30,10 +36,7 @@ namespace BlackFox.UserTile.RegistryUtils
             var lpType = 0;
             var lpcbData = 0;
             var result = RegQueryValueEx(key.Handle, name, null, ref lpType, null, ref lpcbData);
-            if (result != 0)
-            {
-                throw new Win32Exception(result);
-            }
+            if (result != 0) throw new Win32Exception(result);
 
             return lpType;
         }
@@ -47,16 +50,10 @@ namespace BlackFox.UserTile.RegistryUtils
             SafeRegistryHandle result;
 
             var ret = RegOpenKeyEx(parent.Handle, keyName, 0, KEY_SET_VALUE, out result);
-            if (ret != 0)
-            {
-                throw new Win32Exception(ret);
-            }
+            if (ret != 0) throw new Win32Exception(ret);
 
             ret = RegSetValueEx(result, valueName, 0, RegistryValueKind.Binary, data, data.Length);
-            if (ret != 0)
-            {
-                throw new Win32Exception(ret);
-            }
+            if (ret != 0) throw new Win32Exception(ret);
         }
     }
 }
