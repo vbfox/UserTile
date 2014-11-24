@@ -1,6 +1,10 @@
 UserTile
 ========
 
+<a href="https://ci.appveyor.com/project/vbfox/usertile">
+![Build status](https://ci.appveyor.com/api/projects/status/gtkd1w9ama9qdnko/branch/master)
+</a>
+
 This program is made to edit the Windows Vista and Windows 7 user "Tile" also called the "Profile Picture" by
 modifying the binary blob stored under the registry key :
 
